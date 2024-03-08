@@ -10,9 +10,7 @@ class UsuarioService {
       },
     });
 
-    if (usuario) {
-      throw new Error('Usuário já cadastrado');
-    }
+    if (usuario) throw new Error('Usuário já cadastrado');
 
     try {
       const senhaHash = await hash(data.senha, 8);
@@ -30,6 +28,46 @@ class UsuarioService {
 
   async buscarTodos() {
     return await database.usuarios.findAll();
+  }
+
+  async buscarPorId(id) {
+    const usuario = await database.usuarios.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!usuario) throw new Error('Usuário informado não cadastrado');
+
+    return usuario;
+  }
+
+  async editar(data) {
+    const usuario = await this.buscarPorId(data.id);
+
+    try {
+      usuario.nome = data.nome;
+      usuario.email = data.email;
+
+      await usuario.save();
+      return await usuario.reload();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deletar(id) {
+    await this.buscarPorId(id);
+
+    try {
+      await database.usuarios.destroy({
+        where: {
+          id: id,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 }
 

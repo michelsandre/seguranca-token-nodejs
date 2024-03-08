@@ -30,6 +30,49 @@ class ProdutoService {
   async buscarTodos() {
     return await database.produtos.findAll();
   }
+
+  async buscarPorId(id) {
+    const produto = await database.produtos.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!produto) throw new Error('Produto informado não cadastrado');
+
+    return produto;
+  }
+
+  async editar(data) {
+    const produto = await this.buscarPorId(data.id);
+
+    if (!produto) throw new Error('Produto informado não cadastrado');
+
+    try {
+      produto.nome = data.nome;
+      produto.descricao = data.descricao;
+      produto.preco = data.preco;
+
+      await produto.save();
+      return await produto.reload();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deletar(id) {
+    await this.buscarPorId(id);
+
+    try {
+      await database.produtos.destroy({
+        where: {
+          id: id,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = ProdutoService;
