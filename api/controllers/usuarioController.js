@@ -36,7 +36,7 @@ class UsuarioController {
     const { nome, email } = req.body;
 
     try {
-      const usuario = usuarioService.editar({ id, nome, email });
+      const usuario = await usuarioService.editar({ id, nome, email });
       res.status(200).send(usuario);
     } catch (error) {
       res.status(400).send({ message: error.message });
