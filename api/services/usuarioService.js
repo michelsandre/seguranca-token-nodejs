@@ -27,11 +27,36 @@ class UsuarioService {
   }
 
   async buscarTodos() {
-    return await database.usuarios.findAll();
+    return await database.usuarios.findAll({
+      include: [
+        {
+          model: database.roles,
+          as: 'usuario_roles',
+          attributes: ['id', 'nome', 'descricao'],
+        },
+        {
+          model: database.permissoes,
+          as: 'usuario_permissoes',
+          attributes: ['id', 'nome', 'descricao'],
+        },
+      ],
+    });
   }
 
   async buscarPorId(id) {
     const usuario = await database.usuarios.findOne({
+      include: [
+        {
+          model: database.roles,
+          as: 'usuario_roles',
+          attributes: ['id', 'nome', 'descricao'],
+        },
+        {
+          model: database.permissoes,
+          as: 'usuario_permissoes',
+          attributes: ['id', 'nome', 'descricao'],
+        },
+      ],
       where: {
         id: id,
       },

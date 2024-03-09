@@ -1,4 +1,4 @@
-const PermissaoService = require("../services/permissaoService");
+const PermissaoService = require('../services/permissaoService');
 const permissaoService = new PermissaoService();
 
 class PermissaoControler {
@@ -7,7 +7,7 @@ class PermissaoControler {
 
     try {
       const permissao = await permissaoService.cadastrar({ nome, descricao });
-      res.status(201).send(role);
+      res.status(201).send(permissao);
     } catch (error) {
       res.status(400).send({ message: error.message });
     }
@@ -49,7 +49,7 @@ class PermissaoControler {
 
     try {
       await permissaoService.deletar(id);
-      res.status(200).send({ message: "Permissão deletada com sucesso!" });
+      res.status(200).send({ message: 'Permissão deletada com sucesso!' });
     } catch (error) {
       res.status(400).send({ message: error.message });
     }
