@@ -1,14 +1,14 @@
-const { verify, decode } = require('jsonwebtoken');
-const jsonSecret = require('../config/jsonSecret');
+const { verify, decode } = require("jsonwebtoken");
+const jsonSecret = require("../config/jsonSecret");
 
 module.exports = async (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
-    return res.status(401).send({ message: 'Access token não informado' });
+    return res.status(401).send({ message: "Access token não informado" });
   }
 
-  const [, accessToken] = token.split(' ');
+  const [, accessToken] = token.split(" ");
 
   try {
     verify(accessToken, jsonSecret.secret);
@@ -20,6 +20,6 @@ module.exports = async (req, res, next) => {
 
     return next();
   } catch (error) {
-    res.status(401).send({ message: 'Usuário não autorizado' });
+    res.status(401).send({ message: "Usuário não autorizado" });
   }
 };
