@@ -25,7 +25,7 @@ class AuthService {
       },
       jsonSecret.secret,
       {
-        expiresIn: 600,
+        expiresIn: 300,
       }
     );
 
